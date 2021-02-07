@@ -1,25 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import Converter from "./components/convertor";
+import CurrencyLayerClient from "currencylayer-client";
+import styled from "styled-components";
+import HistoricalCurrencyChart from "./components/historicalCurrencyChart";
+
+const MainWrapper = styled.div`
+  width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`;
+
 
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MainWrapper>
+      <h1>Currrency app</h1>
+      <p>Current Euro:</p>
+      <p>CHF:</p>
+      <p>USD:</p>
+      <Converter />
+      <HistoricalCurrencyChart />
+    </MainWrapper>
   );
 }
 
