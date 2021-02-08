@@ -12,7 +12,12 @@ interface initialSelectState {
   s1: string;
   s2: string;
 }
-const Converter: FC = () => {
+interface ConverterProps {
+  liveCurrencyConverterData: any
+}
+const Converter: FC<ConverterProps> = ({liveCurrencyConverterData}) => {
+  console.log("liveCurrencyConverterData", liveCurrencyConverterData);
+  console.log("currencyData", currencyData);
   const [input, setInput] = useState<initialInputState>({
     i1: "",
     i2: "",
@@ -24,27 +29,25 @@ const Converter: FC = () => {
 
   const handleInputChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      const name = e.target.name;
-      const value = e.target.value;
+      const { name, value } = e.target;
+      console.log("value", value);
       if (name === "i1") {
         setInput({
-          ...input,
           i1: value,
           i2: (
-            currencyData[select.s1][select.s2] * parseFloat(value)
+            liveCurrencyConverterData[select.s1][select.s2] * parseFloat(value)
           ).toString(),
         });
       } else {
         setInput({
-          ...input,
           i1: (
-            currencyData[select.s2][select.s1] * parseFloat(value)
+            liveCurrencyConverterData[select.s2][select.s1] * parseFloat(value)
           ).toString(),
           i2: value,
         });
       }
     },
-    [select.s2, select.s1, input]
+    [select.s2, select.s1, input, liveCurrencyConverterData]
   );
 
   const handleSelectChange = useCallback(
@@ -52,17 +55,19 @@ const Converter: FC = () => {
       const { name, value } = e.target;
       setSelect((prevState) => ({ ...prevState, [name]: value }));
       if (name === "s1") {
-        const convertedCurrencyValue = select.s2 === value ?
-          input.i1 :
-          currencyData[value][select.s2] * parseFloat(input.i1);
+        const convertedCurrencyValue =
+          select.s2 === value
+            ? input.i1
+            : liveCurrencyConverterData[value][select.s2] * parseFloat(input.i1);
         setInput({
           ...input,
           i2: convertedCurrencyValue.toString(),
         });
       } else {
-        const givenCurrencyValue = select.s1 === value ?
-          input.i2 :
-          currencyData[value][select.s1] * parseFloat(input.i2);
+        const givenCurrencyValue =
+          select.s1 === value
+            ? input.i2
+            : liveCurrencyConverterData[value][select.s1] * parseFloat(input.i2);
         setInput({
           ...input,
           i1: givenCurrencyValue.toString(),

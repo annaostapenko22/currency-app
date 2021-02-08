@@ -13,11 +13,13 @@ const ConvertorInput: FC<ConvertorInputProps> = ({
   value,
   disabled,
 }) => {
+  console.log("VAL", value)
+  const parsedValue = parseFloat(value)
   return (
     <Input
       onChange={handleInputChange}
       name={name}
-      value={parseFloat(value) ? value : ""}
+      value={!isNaN(parsedValue) ? value : ""}
       disabled={disabled}
     ></Input>
   );
