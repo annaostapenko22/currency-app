@@ -1,49 +1,35 @@
-import React, {
-  ChangeEvent,
-  useEffect,
-  useCallback,
-  useState,
-  FC,
-} from "react";
-import styled from "styled-components";
-import { currencyData } from "../../../default";
+import React, { useEffect, useState, FC } from "react";
 
-import MultiSelect from "react-multi-select-component";
+// interfaces
+import { MultiCurrencySelectProps, ChartOption } from "../interfaces";
 
-const Wrapper = styled(MultiSelect)`
-  display: flex;
-  flex-direction: column;
-  width: 220px;
-`;
+// styles
+import { CurrencyMultiSelect } from "../ui";
 
-interface MultiCurrencySelectProps {
-  handleSelect: (currencies: any) => void;
-}
+const allitemSelected = {
+  allItemsAreSelected: "CHF 🍫 USD 🗽",
+};
+
+const options: ChartOption[] = [
+  { label: "CHF 🍫", value: "CHF" },
+  { label: "USD 🗽", value: "USD" },
+];
 
 const MultiCurrencySelect: FC<MultiCurrencySelectProps> = ({
-  handleSelect,
+  changeChartDisplayedFields,
 }) => {
-  const [selected, setSelected] = useState([]);
-  const options: any = [
-    { label: "CHF 🍫", value: "CHF" },
-    { label: "USD 🗽", value: "USD" },
-  ];
-
-  const allitemSelected = {
-    allItemsAreSelected: "CHF 🍫 USD 🗽",
-  };
+  const [selectedOptions, setSelectedOptions] = useState<ChartOption[]>([]);
 
   useEffect(() => {
-    const currencies = selected.map((item: any)=> item.value);
-    console.log("currencies", currencies);
-    handleSelect(currencies);
-  }, [selected]);
+    const currencies = selectedOptions.map((item: ChartOption) => item.value);
+    changeChartDisplayedFields(currencies);
+  }, [selectedOptions, changeChartDisplayedFields]);
 
   return (
-    <Wrapper
+    <CurrencyMultiSelect
       options={options}
-      value={selected}
-      onChange={setSelected}
+      value={selectedOptions}
+      onChange={setSelectedOptions}
       labelledBy={"Select"}
       hasSelectAll={false}
       disableSearch={true}

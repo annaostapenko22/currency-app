@@ -1,4 +1,9 @@
- const convertFromOneToAnotherCurrencyThroughUSD = (
+import {
+  HistoricalCurrency,
+  LiveCurrencyConvertedData,
+} from "../components/converter/interfaces";
+
+const convertFromOneToAnotherCurrencyThroughUSD = (
   fromCurrencyValue: number,
   toCurrencyValue: number
 ) => {
@@ -12,7 +17,7 @@ const liveCurrenciesResponseConverter = async (liveCurrenciesResponse: any) => {
 
   const currencies: any = {
     [givenCurrency]: {},
-  };
+  } ;
 
   for (let key in liveCurrenciesResponse.quotes) {
     const convertedCurrency = key.slice(3);
@@ -41,8 +46,7 @@ const liveCurrenciesResponseConverter = async (liveCurrenciesResponse: any) => {
       }
     }
   }
-return currencies;
-  // console.log(currencies);
+  return currencies;
 };
 
 export {

@@ -1,8 +1,7 @@
 import { FC } from "react";
 
-interface ConverterSelectOptionProps {
-  value: string;
-}
+// interfaces
+import {ConverterSelectOptionProps} from "../../interfaces"
 
 const ConverterSelectOption: FC<ConverterSelectOptionProps> = ({ value }) => (
   <option>{value}</option>
