@@ -20,7 +20,11 @@ const Chart: FC<ChartProps> = ({ historicalChartData, selectedCurrencies }) => {
 
         for (let key in currencyDate) {
           if (selectedCurrencies.includes(key)) {
-            currencyDataToDisplay[key] = currencyDate[key];
+            const currencyKeyDisplaedValue =
+              key === "date"
+                ? currencyDate[key]
+                : Number(currencyDate[key]).toFixed(2);
+            currencyDataToDisplay[key] = currencyKeyDisplaedValue;
           }
         }
 
