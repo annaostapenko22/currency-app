@@ -1,4 +1,6 @@
 import React, { ChangeEvent, useState, useCallback, useEffect } from "react";
+
+// components
 import ConverterInput from "./converterInput";
 import ConverterSelect from "./converterSelect";
 
@@ -7,17 +9,21 @@ import { ConverterInnerWrapper, ConverterWrapper } from "./ui";
 
 // interfaces
 import {
-  initialSelectState,
-  initialInputState,
+  InitialSelectState,
+  InitialInputState,
   HistoricalCurrency,
   LiveCurrencyConvertedData,
 } from "./interfaces";
 
-import { currencyNames } from "../../enums/currencyNames";
+// helpers
 import { liveCurrenciesResponseConverter } from "../../helpers/converter";
-import { client } from "../../services/currencyLayerClientService";
-
 import { CURRENCIES } from "../../helpers/constants";
+
+// enums
+import { currencyNames } from "../../enums/currencyNames";
+
+// services
+import { client } from "../../services/currencyLayerClientService";
 
 const Converter = () => {
   const [liveCurrencyConverterData, setliveCurrencyConverterData] = useState<
@@ -36,12 +42,12 @@ const Converter = () => {
 
     setLiveCurrenciesResponse();
   }, []);
-  const [conversionInputs, setConversionInputs] = useState<initialInputState>({
+  const [conversionInputs, setConversionInputs] = useState<InitialInputState>({
     givenCurrencyInput: "",
     convertedCurrencyInput: "",
   });
 
-  const [currencySelects, setCurrencySelects] = useState<initialSelectState>({
+  const [currencySelects, setCurrencySelects] = useState<InitialSelectState>({
     givenCurrencySelect: currencyNames.EUR,
     convertedCurrencySelect: currencyNames.USD,
   });
@@ -92,32 +98,38 @@ const Converter = () => {
   const handleSelectChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
       const { name, value } = e.target;
+      const { givenCurrencySelect, convertedCurrencySelect } = currencySelects;
+      const { givenCurrencyInput, convertedCurrencyInput } = conversionInputs;
+
       setCurrencySelects((prevState) => ({ ...prevState, [name]: value }));
-      if (name === "convertedCurrencySelect") {
-        const convertedCurrencyValue =
-          currencySelects.convertedCurrencySelect === value
-            ? conversionInputs.givenCurrencyInput
-            : liveCurrencyConverterData[value][
-                currencySelects.convertedCurrencySelect
-              ] * parseFloat(conversionInputs.givenCurrencyInput);
+      if (!givenCurrencyInput) {
         setConversionInputs({
-          ...conversionInputs,
-          convertedCurrencyInput: convertedCurrencyValue.toString(),
+          givenCurrencyInput: "",
+          convertedCurrencyInput: "",
         });
       } else {
-        const givenCurrencyValue =
-          currencySelects.givenCurrencySelect === value
-            ? conversionInputs.convertedCurrencyInput
-            : liveCurrencyConverterData[value][
-                currencySelects.givenCurrencySelect
-              ] * parseFloat(conversionInputs.convertedCurrencyInput);
-        setConversionInputs({
-          ...conversionInputs,
-          givenCurrencyInput: givenCurrencyValue.toString(),
-        });
+        if (name === "convertedCurrencySelect") {
+          setConversionInputs({
+            ...conversionInputs,
+            convertedCurrencyInput: countConversionValue(
+              value,
+              convertedCurrencySelect,
+              givenCurrencyInput
+            ),
+          });
+        } else {
+          setConversionInputs({
+            ...conversionInputs,
+            givenCurrencyInput: countConversionValue(
+              value,
+              givenCurrencySelect,
+              convertedCurrencyInput
+            ),
+          });
+        }
       }
     },
-    [conversionInputs, currencySelects, liveCurrencyConverterData]
+    [conversionInputs, currencySelects, countConversionValue]
   );
   return (
     <ConverterWrapper>

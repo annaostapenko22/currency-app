@@ -1,6 +1,12 @@
 import React, { FC } from "react";
-import { ConverterSelectProps } from "../interfaces";
+
+// components
 import ConverterSelectOption from "./converterSelectOption";
+
+// interfaces
+import { ConverterSelectProps } from "../interfaces";
+
+// enums
 import { currencyNames } from "../../../enums/currencyNames";
 
 // styles

@@ -1,4 +1,6 @@
 import { FC } from "react";
+
+// interfaces
 import { ConverterInputProps } from "../interfaces";
 
 // styles

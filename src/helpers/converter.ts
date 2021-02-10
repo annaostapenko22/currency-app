@@ -3,6 +3,8 @@ import {
   LiveCurrencyConvertedData,
 } from "../components/converter/interfaces";
 
+export type LiveCurrencyResponse = any;
+
 const convertFromOneToAnotherCurrencyThroughUSD = (
   fromCurrencyValue: number,
   toCurrencyValue: number
@@ -12,12 +14,14 @@ const convertFromOneToAnotherCurrencyThroughUSD = (
   return fromCurrencyInUSD / toCurrencyInUSD;
 };
 
-const liveCurrenciesResponseConverter = async (liveCurrenciesResponse: any) => {
+const liveCurrenciesResponseConverter = async (
+  liveCurrenciesResponse: LiveCurrencyResponse
+) => {
   const givenCurrency = liveCurrenciesResponse.source;
 
-  const currencies: any = {
-    [givenCurrency]: {},
-  } ;
+  const currencies: LiveCurrencyConvertedData<HistoricalCurrency> = {
+    [givenCurrency]: {} as HistoricalCurrency,
+  } as LiveCurrencyConvertedData<HistoricalCurrency>;
 
   for (let key in liveCurrenciesResponse.quotes) {
     const convertedCurrency = key.slice(3);
@@ -29,7 +33,7 @@ const liveCurrenciesResponseConverter = async (liveCurrenciesResponse: any) => {
     if (!currencies[currency]) {
       for (let innerCurrency in currencies[givenCurrency]) {
         if (!currencies[currency]) {
-          currencies[currency] = {};
+          currencies[currency] = {} as HistoricalCurrency;
         }
 
         if (currency === innerCurrency) {

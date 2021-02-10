@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 
 // components
 import MultiCurrencySelect from "./multiCurrencySelect";
-import Chart from "./chart.tsx";
+import Chart from "./chart";
 
 // styles
 import { Wrapper } from "./ui";
@@ -34,7 +34,6 @@ const HistoricalCarrencyChart = () => {
   const changeChartDisplayedFields = useCallback((currencies: string[]) => {
     setChartDisplayedFields([...currencies, "EUR", "date"]);
   }, []);
-  console.log("chartDisplayedFields===>", chartDisplayedFields);
   return (
     <Wrapper>
       <MultiCurrencySelect

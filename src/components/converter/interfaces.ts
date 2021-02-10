@@ -30,12 +30,12 @@ export interface ConverterInputProps {
   handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export interface initialInputState {
+export interface InitialInputState {
   givenCurrencyInput: string;
   convertedCurrencyInput: string;
 }
 
-export interface initialSelectState {
+export interface InitialSelectState {
   givenCurrencySelect: string;
   convertedCurrencySelect: string;
 }
