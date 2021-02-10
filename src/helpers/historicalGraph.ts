@@ -1,10 +1,14 @@
 import moment from "moment";
 
-import { convertFromOneToAnotherCurrencyThroughUSD } from "./converter";
-import { client } from "../services/currencyLayerClientService";
-import { BASE_CURRENCY, CURRENCIES } from "../helpers/constants";
+// servies
+import { getHistoricalDataByDate } from "../services/currencyLayerClientService";
+
+// interfaces
 import { HistoricalCurrency } from "../components/converter/interfaces";
-import { LiveCurrencyResponse } from "../helpers/converter";
+
+// helpers
+import { BASE_CURRENCY } from "../helpers/constants";
+import { convertFromOneToAnotherCurrencyThroughUSD, LiveCurrencyResponse } from "./converter";
 import { getDataFromLocalStorage, setDataToLocalStorage } from "./storage";
 
 const createDateStringsArrayFromToday = (daysAmount: number) => {
@@ -34,10 +38,7 @@ const collectHistoricalData = async (daysAmount: number) => {
     let dateCurrencyConversion = getDateCurrencyConversionFromCache(date);
 
     if (!dateCurrencyConversion) {
-      dateCurrencyConversion = await client.historical({
-        date: date,
-        currencies: CURRENCIES,
-      });
+      dateCurrencyConversion = await getHistoricalDataByDate(date);
       setDateCurrencyConversionToCache(date, dateCurrencyConversion);
     }
 

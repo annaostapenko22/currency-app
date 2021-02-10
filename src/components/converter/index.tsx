@@ -17,13 +17,12 @@ import {
 
 // helpers
 import { liveCurrenciesResponseConverter } from "../../helpers/converter";
-import { CURRENCIES } from "../../helpers/constants";
 
 // enums
 import { currencyNames } from "../../enums/currencyNames";
 
 // services
-import { client } from "../../services/currencyLayerClientService";
+import { getLiveCurrenciesConversion } from "../../services/currencyLayerClientService";
 
 const Converter = () => {
   const [liveCurrencyConverterData, setliveCurrencyConverterData] = useState<
@@ -31,9 +30,7 @@ const Converter = () => {
   >({} as LiveCurrencyConvertedData<HistoricalCurrency>);
   useEffect(() => {
     const setLiveCurrenciesResponse = async () => {
-      const liveCurrenciesResponse = await client.live({
-        currencies: CURRENCIES,
-      });
+      const liveCurrenciesResponse = await getLiveCurrenciesConversion();
       const liveCurrencyData = await liveCurrenciesResponseConverter(
         liveCurrenciesResponse
       );
